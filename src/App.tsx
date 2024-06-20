@@ -1,13 +1,18 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useActionState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import mockUploadImage from './utils/mockUploadImage';
 import './App.css';
 
+const initialState = {
+  success: false,
+  result: null,
+  error: null,
+};
+
 const App = () => {
   const [file, setFile] = useState<File>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>('');
+  const [{ error, success, result }, submitAction, isPending] = useActionState(mockUploadImage, initialState);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     // Do something with the files
@@ -26,23 +31,6 @@ const App = () => {
     }
   });
 
-  const handleUploadImage = async () => {
-    if (!file) return;
-
-    setLoading(true);
-    setError('');
-
-    try {
-      const response = await mockUploadImage(file);
-      console.log(response);
-    } catch (error) {
-      setError('Error al subir la imagen');
-    } finally {
-      setLoading(false);
-      setFile(undefined);
-    }
-  };
-
   const renderDropzoneContent = () => {
     if (file) {
       return <p>{file.name}</p>;
@@ -54,15 +42,15 @@ const App = () => {
   };
 
   return (
-    <div className='container'>
+    <form className='container' action={submitAction}>
       <h2 className='title'>Administrador de archivos</h2>
       <div className='input-area' {...getRootProps()}>
-        <input {...getInputProps()} />
+        <input {...getInputProps()} name='file' />
         {renderDropzoneContent()}
-        {!!error && <p className='error'>{error}</p>}
+        {!success && !!error && <p className='error'>{error}</p>}
       </div>
-      {!!file && <button onClick={handleUploadImage} className='upload-btn'>{loading ? 'Subiendo...' : 'Subir'}</button>}
-    </div>
+      {!!file && <button className='upload-btn'>{isPending ? 'Subiendo...' : 'Subir'}</button>}
+    </form>
   )
 }
 
