@@ -15,6 +15,7 @@ const initialState: initialStateType = {
 const App = () => {
   const [file, setFile] = useState<File>();
   const [{ error, success }, submitAction] = useActionState(mockUploadImage, initialState);
+  
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     // Do something with the files
@@ -43,7 +44,7 @@ const App = () => {
     );
   };
 
-  /*return (
+  return (
     <form className='container' action={submitAction}>
       <h2 className='title'>Administrador de archivos</h2>
       <div className='input-area' {...getRootProps()}>
@@ -53,7 +54,7 @@ const App = () => {
       </div>
       {!!file && <SubmitButton />}
     </form>
-  )*/
+  )
   return <CommentsSection />;
 }
 
