@@ -1,10 +1,10 @@
-import { useCallback, useState, useActionState } from 'react';
+import { useCallback, useState, useActionState, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import mockUploadImage, { initialStateType } from './utils/mockUploadImage';
 import './App.css';
 import SubmitButton from './components/SubmitButton';
-import CommentsSection from './components/CommentsSection';
+import CustomInput from './components/CustomInput';
 
 const initialState: initialStateType = {
   success: false,
@@ -13,11 +13,16 @@ const initialState: initialStateType = {
 };
 
 const App = () => {
+  const inputContainerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [file, setFile] = useState<File>();
   const [{ error, success }, submitAction] = useActionState(mockUploadImage, initialState);
   
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    console.log(inputContainerRef.current, 'inputContainerRef');
+
     // Do something with the files
     if (acceptedFiles.length) {
       const file = acceptedFiles[0];      
@@ -53,9 +58,9 @@ const App = () => {
         {!success && !!error && <p className='error'>{error}</p>}
       </div>
       {!!file && <SubmitButton />}
+      <CustomInput label='Prueba' ref={inputContainerRef} inputRef={inputRef} />
     </form>
   )
-  return <CommentsSection />;
 }
 
 export default App
