@@ -1,11 +1,13 @@
-import { useCallback, useState, useActionState, useRef, use } from 'react';
+import { useCallback, useState, useActionState, useRef, /*use*/ } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import mockUploadImage, { initialStateType } from './utils/mockUploadImage';
-import './App.css';
 import SubmitButton from './components/SubmitButton';
 import CustomInput from './components/CustomInput';
-import ThemeContext from './context/ThemeContext';
+// import ThemeContext from './context/ThemeContext';
+import BlogItem from './components/BlogItem';
+
+import './App.css';
 
 const initialState: initialStateType = {
   success: false,
@@ -14,12 +16,12 @@ const initialState: initialStateType = {
 };
 
 const App = () => {
-  const theme = use(ThemeContext);
-  const myPromise = use(Promise.resolve({ data: [{ id: 1, value: 'one' }] }).catch(undefined));
+  // const theme = use(ThemeContext);
+  // const myPromise = use(Promise.resolve({ data: [{ id: 1, value: 'one' }] }).catch(undefined));
   const inputContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  console.log('myPromise:', myPromise);
+  // console.log('myPromise:', myPromise);
 
   const [file, setFile] = useState<File>();
   const [{ error, success }, submitAction] = useActionState(mockUploadImage, initialState);
@@ -40,7 +42,7 @@ const App = () => {
     onDrop,
     accept: {
       "image/png": [".png"],
-      "image/jpeg": ["jpeg"],
+      "image/jpeg": [".jpeg"],
     }
   });
 
@@ -56,6 +58,7 @@ const App = () => {
 
   return (
     <form className='container' action={submitAction}>
+      <title>Blog MAIN</title>
       <h2 className='title'>Administrador de archivos</h2>
       <div className='input-area' {...getRootProps()}>
         <input {...getInputProps()} name='file' />
@@ -63,7 +66,8 @@ const App = () => {
         {!success && !!error && <p className='error'>{error}</p>}
       </div>
       {!!file && <SubmitButton />}
-      <CustomInput label='Prueba' ref={inputContainerRef} inputRef={inputRef} />
+      {/*<CustomInput label='Prueba' ref={inputContainerRef} inputRef={inputRef} />*/}
+      <BlogItem />
     </form>
   )
 }

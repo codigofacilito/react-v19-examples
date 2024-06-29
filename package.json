@@ -14,7 +14,8 @@
     "eslint-plugin-react-compiler": "^0.0.0-experimental-0998c1e-20240625",
     "react": "19.0.0-rc-e684ca66ab-20240619",
     "react-dom": "19.0.0-rc-e684ca66ab-20240619",
-    "react-dropzone": "^14.2.3"
+    "react-dropzone": "^14.2.3",
+    "vite-plugin-css-injected-by-js": "^3.5.1"
   },
   "devDependencies": {
     "@types/react": "npm:types-react@^19.0.0-rc.1",
